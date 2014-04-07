@@ -2,9 +2,32 @@
 
 window.onload = main;
 
+var player1name = window.prompt("Player 1 Enter Your Name!:");
+ 
+ var player2name = window.prompt("Player 2 Enter Your Name!:");
 
-var pname="Player";
+var pname=player1name;
+var pname2=player2name;
 var pturns=0;
+var matches1 =0;
+var matches2 =0;
+var playerturn =1;
+var winner = function()
+    {
+        if(matches1>matches2)
+        {
+              alert(pname +" YOU WON!");
+        }
+        else if(matches1<matches2)
+        {
+              alert(pname2 +" YOU WON!");
+        }
+        else
+        {
+              alert("IT WAS A DRAW!");
+        }
+    }
+
 
 function main() {    	
     var divs = document.getElementsByClassName("c");
@@ -14,29 +37,35 @@ function main() {
 	
 	try{
 	 pname=JSON.parse(window.localStorage.mydata).name;
+	 pname2=JSON.parse(window.localStorage.mydata).name2;
 	 pturns=JSON.parse(window.localStorage.mydata).turns;
 	 
 	 clicks=pturns;
-	 document.getElementById("insert").innerHTML= (pname)+" : Progress " +(clicks);
+	 document.getElementById("insert").innerHTML= (pname)+" : Pair " +(clicks);
+	 document.getElementById("insert2").innerHTML+= (pname2)+" : Pair " +(clicks);
 	}catch(exception){
-		document.getElementById("insert").innerHTML= (pname)+" : Progress " +(clicks);
+		document.getElementById("insert").innerHTML= (pname)+" : Pair " +(clicks);
+		document.getElementById("insert2").innerHTML+= (pname2)+" : Pair " +(clicks);
 	}
 }
 
 var setAudio = function() {
     var audioElement = document.createElement('audio');
-    audioElement.setAttribute('src', 'http://static1.grsites.com/archive/sounds/battle/battle003.mp3');
-    audioElement.load()
+    audioElement.setAttribute('src', 'http://static1.grsites.com/archive/sounds/office/office013.mp3');
+    audioElement.load();
     audioElement.play(); 
     clicks++;
 	
-	//alert(clicks);	
-	document.getElementById("insert").innerHTML= (pname)+" : Progress " +(clicks);
+	//alert(clicks);
+
+	document.getElementById("insert").innerHTML= (pname)+" : Pair " +(matches1);
+
+	document.getElementById("insert2").innerHTML= (pname2)+" : Pair " +(matches2);
 	
-    if(clicks > 23){
-        var audioElement = document.createElement('audio');
+    if(clicks > 100){
+       // var audioElement = document.createElement('audio');
         audioElement.setAttribute('src', 'http://static1.grsites.com/archive/sounds/battle/battle008.mp3');
-        audioElement.load()
+        audioElement.load();
         audioElement.play();
         
         alert("Times up loser!");        
@@ -45,13 +74,15 @@ var setAudio = function() {
 		window.localStorage.clear();	
         document.location.reload(true);	
     }
-}
+};
 
 var clicks=0;
 abs="position:absolute;";
 wit="width:99px;height:99px;";
 
-function clas(e,c){e.className="w "+c}
+function clas(e,c){e.className="w "+c;
+   
+}
 
 // add css prefixes
 function pfix(cs){return";-webkit-"+cs+";-moz-"+cs+";-o-"+cs}
@@ -64,7 +95,7 @@ css.type = 'text/css';
 
 var styles
 =".w{"+wit+"border:1px solid# +777;text-align:center;margin:5px;float:left"+
-"}.v .b,.p .b{"+pfix("transform:rotatey(180deg); opacity:0")+"}.c{"+wit+abs+"font-size:80px; padding-top:10px;}.c b{"+abs+"font-size:24px;left:5px}.b,.r{color:red}"+
+"}.v .b,.p .b{"+pfix("transform:rotatey(100deg); opacity:0")+"}.c{"+wit+abs+"font-size:80px; padding-top:10px;}.c b{"+abs+"font-size:24px;left:5px}.b,.r{color:red}"+
 ".b{padding-top:0px; background-image: url(http://img3.wikia.nocookie.net/__cb20100726082133/yugioh/images/e/e5/Back-EN.png);background-size:100px 100px;"+pfix("transition:1s")+"}";
 
 css.appendChild(document.createTextNode(styles));
@@ -80,26 +111,69 @@ function flip(t){
     if(y)
         clas(x,""),
         clas(y,"");
+        
+        if ( y && x !== ""){
+            if(playerturn === 1)
+                        {
+                            playerturn=2;
+                            alert("player2 turn");
+                        
+                        //yourturn();
+                         }
+                            else
+                        {
+                            playerturn=1;
+                            alert("player1 turn");
+                        //yourturn();
+                        }
+       
+        }
     // if one card was visible we need to compare it with the one we just turned
     if(x&&!y&&x!=t&&x.innerHTML==t.innerHTML){
         // if they match we sign them as "paired"
         clas(x,"p"),
         clas(t,"p"),
         l--;
-    }else clas(t,"v");
+        if(playerturn === 1)
+                    {
+                        playerturn=1;
+                        matches1++;
+                        //yourturn();
+                    }
+                    else
+                    {
+                        playerturn=2;
+                        matches2++;
+                        alert(matches2);
+                        //yourturn();
+                    }
+        var audioElement = document.createElement('audio');
+        audioElement.setAttribute('src', 'http://static1.grsites.com/archive/sounds/bells/bells001.mp3');
+        audioElement.load();
+        audioElement.play(); 
+        
+   
+        
+    }else {clas(t,"v");
+                
+    }
 
     // if all cards paired
     if(!l) {
         var audioElement = document.createElement('audio');
         audioElement.setAttribute('src', 'http://static1.grsites.com/archive/sounds/cartoon/cartoon041.mp3');
-        audioElement.load()
+        audioElement.load();
         audioElement.play();
+        
 		
 		window.localStorage.clear();	
         document.location.reload(true);
-        alert("Excellente!")
+      
+        winner();
+       
     }
 }
+
 
 runCode();
 function runCode(){
@@ -135,6 +209,9 @@ for(i=16;i;i--)
 	b.innerHTML=stat+'</div>';	
    }catch(exception){	
 	b.innerHTML=h+'</div>';	
-  }	
+  }
+  
+
+    
 
 }

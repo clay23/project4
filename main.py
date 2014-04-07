@@ -8,9 +8,19 @@ app = Flask(__name__)
 # the App Engine WSGI application server.
 
 @app.route('/')
-def game(name=None):
+def start(name=None):
+    """Return a friendly HTTP greeting."""
+    return render_template('Start.html',name=name)
+    
+@app.route('/game.html')
+def game1(name=None):
     """Return a friendly HTTP greeting."""
     return render_template('game.html',name=name)
+    
+@app.route('/game_1.html')
+def game2(name=None):
+    """Return a friendly HTTP greeting."""
+    return render_template('game_1.html',name=name)
 
 
 @app.errorhandler(404)
