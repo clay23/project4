@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
+<link href="{{ url_for('static',filename='style.css') }}" rel="stylesheet" />
+<style>
+            #insert{ font-size:20px}
+            #insert2{ font-size:20px}
+        </style>
+
+    <title>Game Setup</title>
+</head>
+<body>
+
+<div class="container">
+<a href="Start.html">Go Back to Player Option</a>
+
+    <h3>Welcome {{values.yourname}}</h3>
+    <div id="status">Waiting for <span class="label label-success" id="otheruser"></span>.
+     <!-- Invite a friend by typing their name here: <input type="text" id="name"/> -->
+    <div class="chatbox">
+        <p>Share this URL with player:</p>
+        <input id="chaturl" type="text" value=""/>
+    </div>
+</div>
+<!-- game display insert here -->
+<div>
+ <div  id="insert"></div>
+   <div  id="insert2"></div>
+   <div id="div">                  
+                        <canvas id="c"></canvas>
+                        
+                        <script>   var b = document.getElementById('div'); </script>
+                        <script src="{{url_for('static',filename = 'game2.js')}}"> </script>
+                        <script> type="text/javascript"> </script>
+                    </div> 
+                    
+                  
+                   <div style="margin-left:530px;">
+                    	     <div id ="header">  </div> 
+                             <input id="name" text="name" name="name"/>        
+                             <input id="name2" text="name2" name="name2"/>      
+                        	 <input onClick="run()" type="button" value="save"/>
+                             <input onClick="rest()" type="button" value="reset"/>
+                             
+                             <br/> <br/>
+                                                       
+					</div>
+                   
+                  
+                   <script type="text/javascript"> 
+				   
+				   function getSelected(){
+					    var sel = document.getElementById("select");
+						alert(sel.value);
+				   }
+				   			   
+				   
+				   
+				   function rest(){				
+					 document.location.reload(true);	
+					 window.localStorage.clear();	
+				   }
+				   function populate(pnam){
+					      var sel = document.getElementById("select");						 
+						  var option = document.createElement("option");						
+						  option.innerHTML = pnam;
+						  sel.appendChild(option);	
+				   }
+				   function run()
+				   {
+					    							
+						var  person = {
+						"name"  : document.getElementById("name").value,
+						"turns"   : clicks, 						              
+						}
+							var  person2 = {
+						"name2"  : document.getElementById("name2").value,
+						"turns2"   : clicks, 						              
+						}
+						
+					
+						var mydata = window.localStorage.mydata=JSON.stringify(						
+						{
+						"name":person.name, 					
+						"turns":person.turns,
+						"gameprogress":h,						
+						},
+						{
+						"name2":person2.name2, 					
+						"turns":person2.turns2,
+						"gameprogress":h,						
+						});
+						
+						alert("Game Saved");
+						populate(person.name);	
+				   }
+						
+				  </script> 
+</div>
+<!-- code stop here -->
+    </body>
+    <script>
+        window.onload=function(){
+            
+            var chaturl = document.getElementById("chaturl");
+            //var namebox = document.getElementById("name");
+            var baseurl = "{{ request.host_url }}{{values.roomid}}";
+            chaturl.value = baseurl;
+            
+            /* namebox.addEventListener("keyup",function(){
+                                   
+                                   chaturl.value = baseurl + "/" +this.value;
+                                     }); */
+        }
+    </script>
+     <script src="{{ url_for('static',filename='script.js') }}">
+      </script>
+<script>
+    channel = new goog.appengine.Channel('{{ values.token }}');
+    socket = channel.open();
+    socket.onopen = onOpened;
+    socket.onmessage = onMessage;
+    socket.onerror = onError;
+    socket.onclose = onClose;
+  </script>
+    </script>
+</html>
